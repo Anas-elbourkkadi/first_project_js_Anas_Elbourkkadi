@@ -30,7 +30,8 @@ function singUpE() {
         alert("good email");
     }
     else {
-        alert("not email");
+       alert("your email is not good");
+       singUpE();
     }
 }
 
