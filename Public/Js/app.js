@@ -109,7 +109,7 @@ function check() {
 
 function changPassword() {
     let email = prompt("enter the email:");
-    let i = database.findIndex(e =>   e.e == email )
+    let i = database.findIndex(e => e.e == email)
     if (i != -1) {
         alert("your email is right");
 
@@ -135,6 +135,8 @@ while (stats) {
         else if (menu == "3") {
             changPassword();
             console.log(database);
+        }
+        else if (menu == "exit") {
             stats = false;
         }
     }
