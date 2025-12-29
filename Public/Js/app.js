@@ -9,13 +9,31 @@
 //             - Check that all other characters are in lowercase.
 //             - Do not save the Name if it has less than 5 characters (excluding spaces).
 //             - Do not save the Name if it contains numbers, "@", or similar special characters.
-
-
-function singup() {
-    let fullName = prompt("enter your full name").trim().split(" ").map(e => e.charAt(0).toUpperCase()+e.slice(1).toLowerCase()).join(' ')
-   
-
+class user {
+    constructor(name, email,) { }
 }
+
+
+
+function singUpN() {
+    let fullName = prompt("enter your full name").trim().split(" ").map(e => e.charAt(0).toUpperCase() + e.slice(1).toLowerCase()).join(' ');
+    if (fullName.length >= 5 && /^[A-Za-z ]+$/.test(fullName)) {
+        alert("good");
+    }
+    else {
+        singUpN()
+    }
+}
+function singUpE() {
+    let email = promp("enter the email:").trim().toLowerCase();
+    if (!email.includes(" ") && email.length > 10 && !/^[^@]+@[^@]+$/.test(email)) {
+        alert("good email");
+    }
+    else {
+        alert("not email");
+    }
+}
+
 
 let menu = prompt("choice the own:\n1-do you want to sing up (type sing up).\n2-do you want to (login type the log in)\n3- do you want to change the password (type 3)\n4- if you want to exit (type exit): ").toLowerCase().trim();
 let listMenu = ["sing up", "log in", "3", "exit"]
@@ -23,10 +41,30 @@ let listMenu = ["sing up", "log in", "3", "exit"]
 if (listMenu.includes(menu)) {
     alert("good")
     if (menu == "sing up") {
-        singup();
+        singUpN();
     }
 }
 else {
     alert("can you enter the own choice in the menu.")
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
