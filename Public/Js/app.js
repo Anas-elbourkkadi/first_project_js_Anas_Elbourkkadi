@@ -10,7 +10,7 @@
 //             - Do not save the Name if it has less than 5 characters (excluding spaces).
 //             - Do not save the Name if it contains numbers, "@", or similar special characters.
 class user {
-    constructor(name, email,) { }
+    constructor(name, email,age) { }
 }
 
 
@@ -24,16 +24,29 @@ function singUpN() {
         singUpN()
     }
 }
-function singUpE() {
-    let email = promp("enter the email:").trim().toLowerCase();
-    if (!email.includes(" ") && email.length > 10 && !/^[^@]+@[^@]+$/.test(email)) {
+function singUpEmail() {
+    let email = prompt("enter the email:").trim().toLowerCase();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.includes(" ") && email.length > 10 && emailRegex.test(email)) {
         alert("good email");
     }
     else {
        alert("your email is not good");
-       singUpE();
+       singUpEmail();
     }
 }
+function singUpAg(){
+    let age=prompt("enter your age:").trim();
+    if(age<100 && age>0 && /[0-9]/.test(age)){
+        Number(age);
+        alert("good");
+    }
+    else{
+        alert("the age isn't good")
+        singUpAg();
+    }
+}
+
 
 
 let menu = prompt("choice the own:\n1-do you want to sing up (type sing up).\n2-do you want to (login type the log in)\n3- do you want to change the password (type 3)\n4- if you want to exit (type exit): ").toLowerCase().trim();
@@ -43,6 +56,8 @@ if (listMenu.includes(menu)) {
     alert("good")
     if (menu == "sing up") {
         singUpN();
+        singUpEmail();
+        singUpAg();
     }
 }
 else {
