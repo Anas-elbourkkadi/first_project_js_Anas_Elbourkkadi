@@ -9,9 +9,16 @@
 //             - Check that all other characters are in lowercase.
 //             - Do not save the Name if it has less than 5 characters (excluding spaces).
 //             - Do not save the Name if it contains numbers, "@", or similar special characters.
-class user {
-    constructor(name, email, age, password) { }
+class User {
+    constructor(name, email, age, password){
+        this.n=name;
+        this.e=email;
+        this.a=age;
+        this.p=password;
+     }
 }
+
+let database=[]
 
 
 
@@ -19,6 +26,7 @@ function singUpN() {
     let fullName = prompt("enter your full name").trim().split(" ").map(e => e.charAt(0).toUpperCase() + e.slice(1).toLowerCase()).join(' ');
     if (fullName.length >= 5 && /^[A-Za-z ]+$/.test(fullName)) {
         alert("good");
+        return fullName;
     }
     else {
         singUpN();
@@ -29,6 +37,7 @@ function singUpEmail() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email.includes(" ") && email.length > 10 && emailRegex.test(email)) {
         alert("good email");
+        return email;
     }
     else {
         alert("your email is not good");
@@ -38,8 +47,9 @@ function singUpEmail() {
 function singUpAg() {
     let age = prompt("enter your age:").trim();
     if (age < 100 && age > 0 && /[0-9]/.test(age)) {
-        Number(age);
+        
         alert("good");
+        return Number(age);
     }
     else {
         alert("the age isn't good")
@@ -50,8 +60,9 @@ function singUpPassword() {
     let password = prompt("enter your password:").trim();
     let car = ["@", "#", "-", "+", "*", "/"]
     if (password.length >= 7 && !/\s/.test(password)) {
-        if (password.split('').somer(e => { car.includes(e) })) {
+        if (password.split('').some(e => {return car.includes(e) })) {
             alert("your password is good.")
+            return password;
         }
         else {
             alert("your password is not good")
@@ -71,10 +82,9 @@ let listMenu = ["sing up", "log in", "3", "exit"]
 if (listMenu.includes(menu)) {
     alert("good")
     if (menu == "sing up") {
-        singUpN();
-        singUpEmail();
-        singUpAg();
-        singUpPassword();
+       let user= new User(singUpN(),singUpEmail(),singUpAg(),singUpPassword());
+       database.push(user);
+       console.log(database);
     }
 }
 else {
