@@ -62,7 +62,10 @@ function singUpPassword() {
     if (password.length >= 7 && !/\s/.test(password)) {
         if (password.split('').some(e => {return car.includes(e) })) {
             alert("your password is good.")
-            return password;
+            let Cpassword= prompt("confirme the password:");
+            if(Cpassword==password){
+                return password;
+            }
         }
         else {
             alert("your password is not good")
