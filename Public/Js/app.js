@@ -4,6 +4,32 @@ class User {
         this.e = email;
         this.a = age;
         this.p = password;
+        this.b = 0
+    }
+    addedmony() {
+        let u = prompt("enter your money:").trim();
+        if (!isNaN(u) && /[1-9]/.test(u) && Number(u) >= 1000) {
+            this.b += Number(u);
+            alert("added your mony is sueccs.");
+        }
+        else {
+            alert("you don't added the mony")
+        }
+    }
+    tflose() {
+        let u = prompt("enter your money:").trim();
+        if (!isNaN(u) && /[1-9]/.test(u)) {
+            if (Number(u) <= this.b) {
+                this.b -= Number(u);
+                alert("added your mony is sueccs.");
+            }
+            else{
+                alert("you don't have enough mony.");
+            }
+        }
+        else {
+            alert("you don't added the mony");
+        }
     }
 }
 
@@ -35,7 +61,7 @@ function singUpEmail() {
 }
 function singUpAg() {
     let age = prompt("enter your age:").trim();
-    if (age < 100 && age > 0 && /[0-9]/.test(age)) {
+    if (age < 100 && age >= 18 && /[0-9]/.test(age)) {
 
         alert("good");
         return Number(age);
@@ -86,15 +112,43 @@ function Cpassword(p) {
     }
 }
 
-function check() {
+function showAccount(user) {
+
+    if (confirm(`this your account:${database[user].b}Dh`)) {
+        while (true) {
+            let scondeMenu = prompt('1-do you want to enter Withdraw Money (type 1):\n2-do you want to Deposit Money (type 2):\n3-do you want to Take a Loan (type 3):\n4-do you want to invest (type 4):\n5-do you want to see History (type 5):\n6-if want to exit (type 6)');
+            if (['1', "2", "3", "4", "5", '6'].includes(scondeMenu)) {
+                if (scondeMenu == '1') {
+                    database[user].addedmony();
+                }
+                else if (scondeMenu == 2) {
+                    database[user].tflose();
+                }
+                else {
+                    break
+                }
+
+            }
+            else {
+                alert('this choice is not found in menu.')
+            }
+
+        }
+
+    }
+
+
+}
+
+function logIn() {
     let check = prompt("enter your email:");
-    let i = database.findIndex(e => { e.e == check })
-    if (i != 0) {
+    let i = database.findIndex(e => { return e.e == check })
+    if (i != -1) {
         alert("your email is found")
         check = prompt("enter the password:")
         if (check == database[i].p) {
             alert("your password is right.")
-            return true
+            showAccount(i);
         }
         else {
             alert("your password is not right.")
@@ -103,7 +157,7 @@ function check() {
     }
     else {
         alert("you email is not right");
-        check();
+        logIn();
     }
 }
 
@@ -116,6 +170,10 @@ function changPassword() {
         database[i].p = Cpassword(prompt("enter a password:").trim());
         alert("change the password is scucces.");
     }
+    else {
+        alert("your password is not right:");
+        changPassword();
+    }
 }
 let stats = true
 while (stats) {
@@ -123,14 +181,13 @@ while (stats) {
     let listMenu = ["sing up", "log in", "3", "exit"]
 
     if (listMenu.includes(menu)) {
-        alert("good")
         if (menu == "sing up") {
             let user = new User(singUpN(), singUpEmail(), singUpAg(), singUpPassword());
             database.push(user);
             console.log(database);
         }
         else if (menu == "log in") {
-            check();
+            logIn();
         }
         else if (menu == "3") {
             changPassword();
@@ -141,7 +198,7 @@ while (stats) {
         }
     }
     else {
-        alert("can you enter the own choice in the menu.")
+        alert("can you enter the own choice in the menu.");
     }
 
 }
