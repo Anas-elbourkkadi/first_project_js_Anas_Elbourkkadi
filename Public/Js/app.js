@@ -31,6 +31,10 @@ class User {
             alert("you don't added the mony");
         }
     }
+    TakeaLoan(){
+        let loan=this.b*0.20;
+        this.b=loan;
+    }
 }
 
 let database = []
@@ -123,6 +127,9 @@ function showAccount(user) {
                 }
                 else if (scondeMenu == 2) {
                     database[user].tflose();
+                }
+                else if(scondeMenu=='2'){
+                    database[user].TakeaLoan();
                 }
                 else {
                     break
