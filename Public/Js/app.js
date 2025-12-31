@@ -4,7 +4,11 @@ class User {
         this.e = email;
         this.a = age;
         this.p = password;
-        this.b = 0
+        this.b = 0;
+        this.s = false;
+        this.i = false;
+        this.loan = 0;
+        this.bi = 0
     }
     addedmony() {
         let u = prompt("enter your money:").trim();
@@ -23,7 +27,7 @@ class User {
                 this.b -= Number(u);
                 alert("added your mony is sueccs.");
             }
-            else{
+            else {
                 alert("you don't have enough mony.");
             }
         }
@@ -31,9 +35,18 @@ class User {
             alert("you don't added the mony");
         }
     }
-    TakeaLoan(){
-        let loan=this.b*0.20;
-        this.b=loan;
+    TakeaLoan() {
+        this.loan = this.b * 0.20;
+        this.b += this.loan;
+        this.s = true;
+        alert("take a loan succes");
+    }
+    invest() {
+        let result = (this.bi * 0.20) + this.bi;
+        if (result > 0) {
+            this.b += (this.bi * 0.20);
+            result-=(this.bi*0.20);
+        }
     }
 }
 
@@ -117,6 +130,14 @@ function Cpassword(p) {
 }
 
 function showAccount(user) {
+    if (database[user].s && database[user].loan > 0) {
+        database[user].b -= (database[user].loan * 0.10);
+        database[user].loan -= (database[user].loan * 0.10);
+        alert(`-${database[user].loan * 0.10}dh from your account`);
+    }
+    if (database[user].i) {
+        database[user].invest()
+    }
 
     if (confirm(`this your account:${database[user].b}Dh`)) {
         while (true) {
@@ -128,11 +149,20 @@ function showAccount(user) {
                 else if (scondeMenu == 2) {
                     database[user].tflose();
                 }
-                else if(scondeMenu=='2'){
+                else if (scondeMenu == '3') {
                     database[user].TakeaLoan();
                 }
+                else if (scondeMenu == '4') {
+                    let invest = parseFloat(prompt("enter the mony do you want to invest:").toLowerCase());
+                    while (invest > database[user].b) {
+                        invest = parseFloat(prompt("you don't have this badget to invest:").toLowerCase());
+                    };
+                    database[user].b -= invest
+                    database[user].bi += invest;
+                    database[user].i = true;
+                }
                 else {
-                    break
+                    break;
                 }
 
             }
