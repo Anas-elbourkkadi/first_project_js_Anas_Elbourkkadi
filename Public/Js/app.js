@@ -8,13 +8,14 @@ class User {
         this.s = false;
         this.i = false;
         this.loan = 0;
-        this.bi = 0
+        this.bi = 0 //(this.bi * 0.20) + this.bi
     }
     addedmony() {
         let u = prompt("enter your money:").trim();
         if (!isNaN(u) && /[1-9]/.test(u) && Number(u) >= 1000) {
             this.b += Number(u);
             alert("added your mony is sueccs.");
+            this.history([`this is the added the mony in ${u}dh in date, ${Date}`])
         }
         else {
             alert("you don't added the mony")
@@ -26,6 +27,8 @@ class User {
             if (Number(u) <= this.b) {
                 this.b -= Number(u);
                 alert("added your mony is sueccs.");
+                this.history([`this is the added the diposte my mony ${u}dh in date, ${Date}`]);
+
             }
             else {
                 alert("you don't have enough mony.");
@@ -42,15 +45,20 @@ class User {
         alert("take a loan succes");
     }
     invest() {
-        let result = (this.bi * 0.20) + this.bi;
         if (result > 0) {
             this.b += (this.bi * 0.20);
-            result-=(this.bi*0.20);
+            result -= (this.bi * 0.20);
         }
+    }
+    history(n) {
+        console.log(`this history Mr ${this.n}:`);
+        localStorage.setItem(this.e, JSON.stringify([]));
+        addedlist = JSON.parse(localStorage.this.e).push(n);
+        localStorage.setItem(this.e, JSON.stringify(addedlist));
     }
 }
 
-let database = []
+let database = [];
 
 
 
@@ -213,11 +221,10 @@ function changPassword() {
     }
 }
 let stats = true
+
 while (stats) {
     let menu = prompt("choice the own:\n1-do you want to sing up (type sing up).\n2-do you want to (type the log in)\n3- do you want to change the password (type 3)\n4- if you want to exit (type exit): ").toLowerCase().trim();
-    let listMenu = ["sing up", "log in", "3", "exit"]
-
-    if (listMenu.includes(menu)) {
+    if (["sing up", "log in", "3", "exit"].includes(menu)) {
         if (menu == "sing up") {
             let user = new User(singUpN(), singUpEmail(), singUpAg(), singUpPassword());
             database.push(user);
@@ -239,7 +246,6 @@ while (stats) {
     }
 
 }
-
 
 
 
