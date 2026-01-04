@@ -5,6 +5,7 @@ class Acount {
         this.e = "";
         this.a = 0;
         this.p = "";
+        this.BA = 0;
     }
     setFullName() {
         let askUser = prompt("enter your full name:")?.trim()?.split(' ')?.map(e => e.charAt(0)?.toUpperCase() + e.slice(1)?.toLowerCase())?.join(' ');
@@ -88,15 +89,37 @@ class Acount {
             askEamil = prompt("enetr your email");
             i = this.checkEmail(askEamil);
         }
-        let v=this.setPassword();
+        let v = this.setPassword();
         if (v != false) {
             Acount.dataBase[i].p = v;
-            alert(`change your password scucss and now this is youe email:${Acount.dataBase[i].e} \nyour password:${Acount.dataBase[i].p}`) 
+            alert(`change your password scucss and now this is youe email:${Acount.dataBase[i].e} \nyour password:${Acount.dataBase[i].p}`)
+        }
+    }
+    login() {
+        let email = prompt("eneter your email:")?.trim()?.toLowerCase();
+        let call = this.checkEmail(email)
+        while (call == -1 || email === undefined || email === null) {
+            alert('your email is not correct');
+            email = prompt("eneter your email:")?.trim()?.toLowerCase();
+            call = this.checkEmail(email);
+
+        }
+        let password = prompt("enter the password:")?.trim();
+        if (Acount.dataBase[call].p === password){
+            alert(`this your account\n${Acount.dataBase[call].BA}DH.`);
+
+        }
+        else{
+            alert('your passwoed is not correct.')
         }
     }
 
 }
 let user = new Acount();
+
+function scondeMenu(){
+    let m=prompt("")
+}
 while (true) {
     let ask = prompt("1-do you want to sing up (type 1):\n2-do you want to log in (type 2):\n3-do you want to change passworde (type 3):\n4-do you want to exit (type exit):")?.toLowerCase()
     if (['1', '2', '3', 'exit'].includes(ask)) {
@@ -104,6 +127,9 @@ while (true) {
             user.setFullName();
             user.addedData();
             console.log(Acount.dataBase);
+        }
+        else if (ask == 2) {
+            user.login();
         }
         else if (ask == 3) {
             user.resultChnge();
