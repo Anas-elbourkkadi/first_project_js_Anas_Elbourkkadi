@@ -1,272 +1,118 @@
-class User {
-    constructor(name, email, age, password) {
-        this.n = name;
-        this.e = email;
-        this.a = age;
-        this.p = password;
-        this.b = 0;
-        this.s = false;
-        this.i = false;
-        this.loan = 0;
-        this.bi = 0 //(this.bi * 0.20) + this.bi
+class Acount {
+    static dataBase = [];
+    constructor() {
+        this.n = "";
+        this.e = "";
+        this.a = 0;
+        this.p = "";
     }
-    addedmony() {
-        let u = prompt("enter your money:").trim();
-        if (!isNaN(u) && /[1-9]/.test(u) && Number(u) >= 1000) {
-            this.b += Number(u);
-            alert("added your mony is sueccs.");
-            this.history([`this is the added the mony in ${u}dh in date, ${Date}`])
+    setFullName() {
+        let askUser = prompt("enter your full name:")?.trim()?.split(' ')?.map(e => e.charAt(0)?.toUpperCase() + e.slice(1)?.toLowerCase())?.join(' ');
+        while (askUser.length <= 5 || !/^[A-Za-z ]+$/.test(askUser) || askUser == null) {
+            alert("your name is not good");
+            askUser = prompt("enter your full name:")?.trim()?.split(' ')?.map(e => e.charAt(0)?.toUpperCase() + e.slice(1)?.toLowerCase())?.join(' ');
+
+        }
+        alert(`your name ${askUser} is  good`);
+        this.n = askUser;
+        this.setEmail();
+    }
+    checkEmail(n) {
+        return Acount.dataBase.findIndex(e => e.e === n);
+    }
+    setEmail() {
+        let askEamil = prompt("eneter your email:")?.trim()?.toLowerCase();
+        while (askEamil.length < 10 || / /.test(askEamil) || askEamil == null || !/^[^@]*@[^@]*$/.test(askEamil) || this.checkEmail(askEamil) != -1) {
+            console.log(this.checkEmail(askEamil));
+            alert("your email is not correct, try again.");
+            askEamil = prompt("eneter your email:")?.trim()?.toLowerCase();
+
+        }
+        this.e = askEamil;
+        alert(`added your ${this.e} seucces`);
+        this.setAge();
+
+    }
+    setAge() {
+        let askAge = prompt("enter your age:")?.trim();
+        while (/\s/.test(askAge) || !/^[0-9]+$/.test(askAge) || parseInt(askAge) < 18 || parseInt(askAge) >= 100 || askAge == null) {
+            alert("your input is not right");
+            askAge = prompt("enter your age:").trim();
+        }
+        this.a = parseInt(askAge);
+        alert(`added your age ${this.a} suescss`);
+        let v = this.setPassword()
+        if (v != false) {
+            this.p = v;
+        }
+    }
+    setPassword() {
+        let askPassword = prompt("Enter your password:")?.trim();
+        while (
+            askPassword.length < 7 ||
+            /\s/.test(askPassword) ||
+            askPassword == undefined ||
+            !/[#@+\-*\/]/.test(askPassword) ||
+            askPassword == null
+        ) {
+            alert('your password is not right.');
+            askPassword = prompt("Enter your password:").trim();
+
+        }
+        let confirmPass = prompt("Confirm the password :");
+        if (confirmPass === askPassword) {
+            alert("confirme password is scucess.");
+            return askPassword;
+
         }
         else {
-            alert("you don't added the mony")
+            alert("your password is not confirme.");
+            return false
         }
-    }
-    tflose() {
-        let u = prompt("enter your money:").trim();
-        if (!isNaN(u) && /[1-9]/.test(u)) {
-            if (Number(u) <= this.b) {
-                this.b -= Number(u);
-                alert("added your mony is sueccs.");
-                this.history([`this is the added the diposte my mony ${u}dh in date, ${Date}`]);
 
-            }
-            else {
-                alert("you don't have enough mony.");
-            }
+    }
+    addedData() {
+        if ([this.p, this.a, this.e, this.n].includes(undefined) || [this.n, this.a, this.e, this.p].includes(null) || [this.n, this.a, this.e, this.p].includes('')) {
+            alert("we didn't added your info,retrun sing up");
         }
         else {
-            alert("you don't added the mony");
+            Acount.dataBase.push(this);
+            alert(`added your info is sccues Mr ${this.n} `)
         }
     }
-    TakeaLoan() {
-        this.loan = this.b * 0.20;
-        this.b += this.loan;
-        this.s = true;
-        alert("take a loan succes");
-    }
-    invest() {
-        if (result > 0) {
-            this.b += (this.bi * 0.20);
-            result -= (this.bi * 0.20);
+    resultChnge() {
+        let askEamil = prompt("enetr your email");
+        let i = this.checkEmail(askEamil);
+        while (i == -1) {
+            alert('your email is not found in database.');
+            askEamil = prompt("enetr your email");
+            i = this.checkEmail(askEamil);
+        }
+        let v=this.setPassword();
+        if (v != false) {
+            Acount.dataBase[i].p = v;
+            alert(`change your password scucss and now this is youe email:${Acount.dataBase[i].e} \nyour password:${Acount.dataBase[i].p}`) 
         }
     }
-    history(n) {
-        console.log(`this history Mr ${this.n}:`);
-        localStorage.setItem(this.e, JSON.stringify([]));
-        let addedlist = JSON.parse(localStorage.getItem(this.e));
-        addedlist.push(n);
-        localStorage.setItem(this.e, JSON.stringify(addedlist));
-    }
-}
-
-let database = [];
-
-
-
-function singUpN() {
-    let fullName = prompt("enter your full name").trim().split(" ").map(e => e.charAt(0).toUpperCase() + e.slice(1).toLowerCase()).join(' ');
-    if (fullName.length >= 5 && /^[A-Za-z ]+$/.test(fullName)) {
-        alert("good");
-        return fullName;
-    }
-    else {
-        singUpN();
-    }
-}
-function singUpEmail() {
-    let email = prompt("enter the email:").trim().toLowerCase();
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email.includes(" ") && email.length > 10 && emailRegex.test(email)) {
-        alert("good email");
-        return email;
-    }
-    else {
-        alert("your email is not good");
-        singUpEmail();
-    }
-}
-function singUpAg() {
-    let age = prompt("enter your age:").trim();
-    if (age < 100 && age >= 18 && /[0-9]/.test(age)) {
-
-        alert("good");
-        return Number(age);
-    }
-    else {
-        alert("the age isn't good")
-        singUpAg();
-    }
-}
-function singUpPassword() {
-    let password = prompt("enter your password:").trim();
-    let car = ["@", "#", "-", "+", "*", "/"]
-    if (password.length >= 7 && !/\s/.test(password)) {
-        if (password.split('').some(e => { return car.includes(e) })) {
-            alert("your password is good.")
-            let Cpassword = prompt("confirme the password:");
-            if (Cpassword == password) {
-                return password;
-            }
-        }
-        else {
-            alert("your password is not good")
-            singUpPassword();
-        }
-    } else {
-        alert("your password is not good")
-        singUpPassword();
-    }
-}
-
-function Cpassword(p) {
-    let car = ["@", "#", "-", "+", "*", "/"]
-    if (p.length >= 7 && !/\s/.test(p)) {
-        if (p.split('').some(e => { return car.includes(e) })) {
-            alert("your password is good.")
-            let Cpassword = prompt("confirme the password:");
-            if (Cpassword == p) {
-                return p;
-            }
-        }
-        else {
-            alert("your password is not good")
-            singUpPassword();
-        }
-    } else {
-        alert("your password is not good")
-        singUpPassword();
-    }
-}
-
-function showAccount(user) {
-    if (database[user].s && database[user].loan > 0) {
-        database[user].b -= (database[user].loan * 0.10);
-        database[user].loan -= (database[user].loan * 0.10);
-        alert(`-${database[user].loan * 0.10}dh from your account`);
-    }
-    if (database[user].i) {
-        database[user].invest()
-    }
-
-    if (confirm(`this your account:${database[user].b}Dh`)) {
-        while (true) {
-            let scondeMenu = prompt('1-do you want to enter Withdraw Money (type 1):\n2-do you want to Deposit Money (type 2):\n3-do you want to Take a Loan (type 3):\n4-do you want to invest (type 4):\n5-do you want to see History (type 5):\n6-if want to exit (type 6)');
-            if (['1', "2", "3", "4", "5", '6'].includes(scondeMenu)) {
-                if (scondeMenu == '1') {
-                    database[user].addedmony();
-                }
-                else if (scondeMenu == 2) {
-                    database[user].tflose();
-                }
-                else if (scondeMenu == '3') {
-                    database[user].TakeaLoan();
-                }
-                else if (scondeMenu == '4') {
-                    let invest = parseFloat(prompt("enter the mony do you want to invest:").toLowerCase());
-                    while (invest > database[user].b) {
-                        invest = parseFloat(prompt("you don't have this badget to invest:").toLowerCase());
-                    };
-                    database[user].b -= invest
-                    database[user].bi += invest;
-                    database[user].i = true;
-                }
-                else {
-                    break;
-                }
-
-            }
-            else {
-                alert('this choice is not found in menu.')
-            }
-
-        }
-
-    }
-
 
 }
-
-function logIn() {
-    let check = prompt("enter your email:");
-    let i = database.findIndex(e => { return e.e == check })
-    if (i != -1) {
-        alert("your email is found")
-        check = prompt("enter the password:")
-        if (check == database[i].p) {
-            alert("your password is right.")
-            showAccount(i);
+let user = new Acount();
+while (true) {
+    let ask = prompt("1-do you want to sing up (type 1):\n2-do you want to log in (type 2):\n3-do you want to change passworde (type 3):\n4-do you want to exit (type exit):")?.toLowerCase()
+    if (['1', '2', '3', 'exit'].includes(ask)) {
+        if (ask == 1) {
+            user.setFullName();
+            user.addedData();
+            console.log(Acount.dataBase);
         }
-        else {
-            alert("your password is not right.")
-
+        else if (ask == 3) {
+            user.resultChnge();
+        }
+        else if (ask == "exit") {
+            break
         }
     }
     else {
-        alert("you email is not right");
-        logIn();
+        alert('your choce is not found in the menu.');
     }
 }
-
-function changPassword() {
-    let email = prompt("enter the email:");
-    let i = database.findIndex(e => e.e == email)
-    if (i != -1) {
-        alert("your email is right");
-
-        database[i].p = Cpassword(prompt("enter a password:").trim());
-        alert("change the password is scucces.");
-    }
-    else {
-        alert("your password is not right:");
-        changPassword();
-    }
-}
-let stats = true
-
-while (stats) {
-    localStorage.clear()
-    let menu = prompt("choice the own:\n1-do you want to sing up (type sing up).\n2-do you want to (type the log in)\n3- do you want to change the password (type 3)\n4- if you want to exit (type exit): ").toLowerCase().trim();
-    if (["sing up", "log in", "3", "exit"].includes(menu)) {
-        if (menu == "sing up") {
-            let user = new User(singUpN(), singUpEmail(), singUpAg(), singUpPassword());
-            database.push(user);
-            console.log(database);
-        }
-        else if (menu == "log in") {
-            logIn();
-        }
-        else if (menu == "3") {
-            changPassword();
-            console.log(database);
-        }
-        else if (menu == "exit") {
-            stats = false;
-        }
-    }
-    else {
-        alert("can you enter the own choice in the menu.");
-    }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
