@@ -53,7 +53,8 @@ class User {
     history(n) {
         console.log(`this history Mr ${this.n}:`);
         localStorage.setItem(this.e, JSON.stringify([]));
-        addedlist = JSON.parse(localStorage.this.e).push(n);
+        let addedlist = JSON.parse(localStorage.getItem(this.e));
+        addedlist.push(n);
         localStorage.setItem(this.e, JSON.stringify(addedlist));
     }
 }
@@ -223,6 +224,7 @@ function changPassword() {
 let stats = true
 
 while (stats) {
+    localStorage.clear()
     let menu = prompt("choice the own:\n1-do you want to sing up (type sing up).\n2-do you want to (type the log in)\n3- do you want to change the password (type 3)\n4- if you want to exit (type exit): ").toLowerCase().trim();
     if (["sing up", "log in", "3", "exit"].includes(menu)) {
         if (menu == "sing up") {
