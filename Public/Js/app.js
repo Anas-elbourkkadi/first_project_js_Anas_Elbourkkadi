@@ -105,20 +105,75 @@ class Acount {
 
         }
         let password = prompt("enter the password:")?.trim();
-        if (Acount.dataBase[call].p === password){
-            alert(`this your account\n${Acount.dataBase[call].BA}DH.`);
+        if (Acount.dataBase[call].p === password) {
+            alert(`this your account: ${Acount.dataBase[call].BA}DH.`);
+            return call;
 
         }
-        else{
+        else {
             alert('your passwoed is not correct.')
         }
+    }
+    checkMony(mony) {
+        let m = prompt(`Enter the mony do you want to ${mony}:`)?.trim();
+        while (!/\d/.test(m) || m === null || m === undefined) {
+            console.log("the wrong input");
+            m = prompt(`Enter the mony do you want to ${mony}:`)?.trim();
+        }
+        return parseFloat(m);
+    }
+    withdrawMony(i) {
+        let v = this.checkMony("Withdraw Money")
+        if (v >= Acount.dataBase.charAt(i).BA) {
+            Acount.dataBase[i].BA -= v;
+            localStorage.setItem(Acount.dataBase[i].e, JSON.stringify([`you are Withdraw Mony:${v} dh ${new Date().toLocaleString()}.`]));
+        }
+        else {
+            console.log('you dont have engouh mony');
+        }
+
+
+    }
+    deposite(i) {
+        let v = this.checkMony("Deposit");
+        if (v >= 1000) {
+            Acount.dataBase[i].BA += v;
+            localStorage.setItem(Acount.dataBase[i].e, JSON.stringify([`you are Deposit:${v} dh ${new Date().toLocaleString()}.`]));
+        }
+        else {
+            console.log('you dont have engouh mony');
+        }
+
     }
 
 }
 let user = new Acount();
 
-function scondeMenu(){
-    let m=prompt("")
+function scondeMenu(index) {
+    while (true) {
+        let m = prompt(`
+1- do you want to Withdraw Money (type 1)
+2- do you want to Deposit Money (type 2)
+3- do you want to Take a Loan (type 3)
+4- do you want to Invest (type 4)
+5- do you want to see History (type 5)
+6- if you want to Exit (type 6)
+`);
+
+        if (m == 1) {
+            user.withdrawMony(index);
+
+        }
+        else if (m == 2) {
+            user.deposite(index);
+        }
+        else if(m==6){
+            break;
+        }
+    }
+
+
+
 }
 while (true) {
     let ask = prompt("1-do you want to sing up (type 1):\n2-do you want to log in (type 2):\n3-do you want to change passworde (type 3):\n4-do you want to exit (type exit):")?.toLowerCase()
@@ -129,7 +184,7 @@ while (true) {
             console.log(Acount.dataBase);
         }
         else if (ask == 2) {
-            user.login();
+            scondeMenu(user.login());
         }
         else if (ask == 3) {
             user.resultChnge();
