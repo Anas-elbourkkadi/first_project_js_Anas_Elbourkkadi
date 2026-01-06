@@ -7,6 +7,8 @@ class Acount {
         this.a = 0;
         this.p = "";
         this.BA = 0;
+        this.TLN = 0;
+        this.Floan = 0
     }
     setFullName() {
         let askUser = prompt("enter your full name:")?.trim()?.split(' ')?.map(e => e.charAt(0)?.toUpperCase() + e.slice(1)?.toLowerCase())?.join(' ');
@@ -98,6 +100,18 @@ class Acount {
             alert(`change your password scucss and now this is youe email:${Acount.dataBase[i].e} \nyour password:${Acount.dataBase[i].p}`)
         }
     }
+    debtReduction(index) {
+        if (Acount.dataBase[index].TLN > 0) {
+            Acount.dataBase[index].BA -= Acount.dataBase[index].Floan * 0.10;
+            Acount.dataBase[index].TLN -= Acount.dataBase[index].Floan * 0.10;
+            this.setHistory(Acount.dataBase[index].e, "debt Reduction", Acount.dataBase[index].Floan * 0.10);
+            alert(`we are debt reduction: -${Acount.dataBase[index].Floan * 0.10}`);
+        }
+        else {
+            Acount.dataBase[index].Floan = 0;
+            alert("you are not a loan");
+        }
+    }
     login() {
         let email = prompt("eneter your email:")?.trim()?.toLowerCase();
         let call = this.checkEmail(email)
@@ -109,9 +123,9 @@ class Acount {
         }
         let password = prompt("enter the password:")?.trim();
         if (Acount.dataBase[call].p === password) {
+            this.debtReduction(call);
             alert(`this your account: ${Acount.dataBase[call].BA}DH.`);
             return call;
-
         }
         else {
             alert('your passwoed is not correct.')
@@ -137,7 +151,7 @@ class Acount {
             alert(`Withdraw Money the -${v}Dh is sucess, and your account know is : ${Acount.dataBase[i].BA}DH.`);
         }
         else {
-            console.log('you dont have engouh mony');
+            alert('you dont have engouh mony');
         }
 
 
@@ -146,13 +160,20 @@ class Acount {
         let v = this.checkMony("Deposit");
         if (v >= 1000) {
             Acount.dataBase[i].BA += v;
-            this.setHistory(Acount.dataBase[i].e, "Deposit",v)
+            this.setHistory(Acount.dataBase[i].e, "Deposit", v)
             alert(`Deposit the +${v}Dh is sucess, and your account know is : ${Acount.dataBase[i].BA}DH.`);
         }
         else {
-            console.log('you dont have engouh mony');
+            alert('you dont have engouh mony');
         }
 
+    }
+    takeLoan(i) {
+        Acount.dataBase[i].TLN += Acount.dataBase[i].BA * 0.20;
+        Acount.dataBase[i].Floan += Acount.dataBase[i].BA * 0.20;
+        Acount.dataBase[i].BA += Acount.dataBase[i].BA * 0.20;
+        alert(`this is your acount now:${Acount.dataBase[i].BA}`);
+        this.setHistory(Acount.dataBase[i].e, "take a loan", Acount.dataBase[i].BA * 0.20);
     }
 
 }
@@ -177,9 +198,13 @@ function scondeMenu(index) {
         else if (m == 2) {
             user.deposite(index);
         }
+        else if (m == 3) {
+            user.takeLoan(index);
+        }
         else if (m == 6) {
             break;
         }
+
     }
 
 
