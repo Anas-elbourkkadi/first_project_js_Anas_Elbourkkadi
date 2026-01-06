@@ -1,5 +1,6 @@
 class Acount {
     static dataBase = [];
+    static history = {};
     constructor() {
         this.n = "";
         this.e = "";
@@ -78,7 +79,9 @@ class Acount {
         }
         else {
             Acount.dataBase.push(this);
-            alert(`added your info is sccues Mr ${this.n} `)
+            alert(`added your info is sccues Mr ${this.n} `);
+            Acount.history[this.e] = [];
+            console.log(Acount.history);
         }
     }
     resultChnge() {
@@ -122,11 +125,16 @@ class Acount {
         }
         return parseFloat(m);
     }
+    setHistory(email, t, v) {
+        Acount.history[email].push(`you are ${t}:${v} dh ${new Date().toLocaleString()}.`);
+        localStorage.setItem(email, JSON.stringify(Acount.history[email]));
+    }
     withdrawMony(i) {
         let v = this.checkMony("Withdraw Money")
-        if (v >= Acount.dataBase.charAt(i).BA) {
+        if (v <= Acount.dataBase[i].BA) {
             Acount.dataBase[i].BA -= v;
-            localStorage.setItem(Acount.dataBase[i].e, JSON.stringify([`you are Withdraw Mony:${v} dh ${new Date().toLocaleString()}.`]));
+            this.setHistory(Acount.dataBase[i].e, "Withdraw Money", v);
+            alert(`Withdraw Money the -${v}Dh is sucess, and your account know is : ${Acount.dataBase[i].BA}DH.`);
         }
         else {
             console.log('you dont have engouh mony');
@@ -138,7 +146,8 @@ class Acount {
         let v = this.checkMony("Deposit");
         if (v >= 1000) {
             Acount.dataBase[i].BA += v;
-            localStorage.setItem(Acount.dataBase[i].e, JSON.stringify([`you are Deposit:${v} dh ${new Date().toLocaleString()}.`]));
+            this.setHistory(Acount.dataBase[i].e, "Deposit",v)
+            alert(`Deposit the +${v}Dh is sucess, and your account know is : ${Acount.dataBase[i].BA}DH.`);
         }
         else {
             console.log('you dont have engouh mony');
@@ -148,6 +157,7 @@ class Acount {
 
 }
 let user = new Acount();
+
 
 function scondeMenu(index) {
     while (true) {
@@ -167,7 +177,7 @@ function scondeMenu(index) {
         else if (m == 2) {
             user.deposite(index);
         }
-        else if(m==6){
+        else if (m == 6) {
             break;
         }
     }
