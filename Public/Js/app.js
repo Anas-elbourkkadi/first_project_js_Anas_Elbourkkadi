@@ -8,7 +8,9 @@ class Acount {
         this.p = "";
         this.BA = 0;
         this.TLN = 0;
-        this.Floan = 0
+        this.Floan = 0;
+        this.invest = 0;
+        this.finvest = 0;
     }
     setFullName() {
         let askUser = prompt("enter your full name:")?.trim()?.split(' ')?.map(e => e.charAt(0)?.toUpperCase() + e.slice(1)?.toLowerCase())?.join(' ');
@@ -111,7 +113,21 @@ class Acount {
             Acount.dataBase[index].Floan = 0;
             alert("you are not a loan");
         }
-    }
+    };
+    returnInvest(index) {
+            if (Acount.dataBase[index].finvest < (Acount.dataBase[index].invest * 0.20) + Acount.dataBase[index].invest) {
+                Acount.dataBase[index].BA += Acount.dataBase[index].invest * 0.20;
+                Acount.dataBase[index].finvest += Acount.dataBase[index].invest * 0.20;
+                this.setHistory(Acount.dataBase[index].e, "return invest", Acount.dataBase[index].invest * 0.20);
+                console.log(Acount.dataBase[index].finvest);
+                alert(`you are added to your acount: +${Acount.dataBase[index].invest * 0.20}`);
+
+            }
+            else {
+                Acount.dataBase[index].invest = 0;
+                Acount.dataBase[index].finvest = 0;
+            }
+    };
     login() {
         let email = prompt("eneter your email:")?.trim()?.toLowerCase();
         let call = this.checkEmail(email)
@@ -124,6 +140,9 @@ class Acount {
         let password = prompt("enter the password:")?.trim();
         if (Acount.dataBase[call].p === password) {
             this.debtReduction(call);
+            if(Acount.dataBase[call].invest>0){
+                this.returnInvest(call);
+            }
             alert(`this your account: ${Acount.dataBase[call].BA}DH.`);
             return call;
         }
@@ -175,7 +194,17 @@ class Acount {
         alert(`this is your acount now:${Acount.dataBase[i].BA}`);
         this.setHistory(Acount.dataBase[i].e, "take a loan", Acount.dataBase[i].BA * 0.20);
     }
-
+    ivt(i) {
+        let v = this.checkMony('invest');
+        while (v <= 0 || Acount.dataBase[i].BA < v) {
+            alert("you don't have engouh mony");
+            v = this.checkMony('invest');
+        }
+        Acount.dataBase[i].invest += v;
+        Acount.dataBase[i].BA -= v;
+        this.setHistory(Acount.dataBase[i].e,'invest',v);
+        alert(`you are invest from acount: -${v}`);
+    }
 }
 let user = new Acount();
 
@@ -201,15 +230,15 @@ function scondeMenu(index) {
         else if (m == 3) {
             user.takeLoan(index);
         }
+        else if (m == 4) {
+            user.ivt(index);
+        }
         else if (m == 6) {
             break;
         }
-
     }
-
-
-
 }
+
 while (true) {
     let ask = prompt("1-do you want to sing up (type 1):\n2-do you want to log in (type 2):\n3-do you want to change passworde (type 3):\n4-do you want to exit (type exit):")?.toLowerCase()
     if (['1', '2', '3', 'exit'].includes(ask)) {
