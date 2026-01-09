@@ -115,18 +115,18 @@ class Acount {
         }
     };
     returnInvest(index) {
-            if (Acount.dataBase[index].finvest < (Acount.dataBase[index].invest * 0.20) + Acount.dataBase[index].invest) {
-                Acount.dataBase[index].BA += Acount.dataBase[index].invest * 0.20;
-                Acount.dataBase[index].finvest += Acount.dataBase[index].invest * 0.20;
-                this.setHistory(Acount.dataBase[index].e, "return invest", Acount.dataBase[index].invest * 0.20);
-                console.log(Acount.dataBase[index].finvest);
-                alert(`you are added to your acount: +${Acount.dataBase[index].invest * 0.20}`);
+        if (Acount.dataBase[index].finvest < (Acount.dataBase[index].invest * 0.20) + Acount.dataBase[index].invest) {
+            Acount.dataBase[index].BA += Acount.dataBase[index].invest * 0.20;
+            Acount.dataBase[index].finvest += Acount.dataBase[index].invest * 0.20;
+            this.setHistory(Acount.dataBase[index].e, "return invest", Acount.dataBase[index].invest * 0.20);
+            console.log(Acount.dataBase[index].finvest);
+            alert(`you are added to your acount: +${Acount.dataBase[index].invest * 0.20}`);
 
-            }
-            else {
-                Acount.dataBase[index].invest = 0;
-                Acount.dataBase[index].finvest = 0;
-            }
+        }
+        else {
+            Acount.dataBase[index].invest = 0;
+            Acount.dataBase[index].finvest = 0;
+        }
     };
     login() {
         let email = prompt("eneter your email:")?.trim()?.toLowerCase();
@@ -140,7 +140,7 @@ class Acount {
         let password = prompt("enter the password:")?.trim();
         if (Acount.dataBase[call].p === password) {
             this.debtReduction(call);
-            if(Acount.dataBase[call].invest>0){
+            if (Acount.dataBase[call].invest > 0) {
                 this.returnInvest(call);
             }
             alert(`this your account: ${Acount.dataBase[call].BA}DH.`);
@@ -202,8 +202,21 @@ class Acount {
         }
         Acount.dataBase[i].invest += v;
         Acount.dataBase[i].BA -= v;
-        this.setHistory(Acount.dataBase[i].e,'invest',v);
+        this.setHistory(Acount.dataBase[i].e, 'invest', v);
         alert(`you are invest from acount: -${v}`);
+    }
+    showhistory(i) {
+        let data = JSON.parse(localStorage.getItem(Acount.dataBase[i].e));
+        let text = `history:\n`;
+        if (data) {
+            data.forEach(e => {
+                text +=(e+'\n');
+            });
+            alert(text);
+        }
+        else {
+            alert("history:\nthere's no thing");
+        }
     }
 }
 let user = new Acount();
@@ -232,6 +245,9 @@ function scondeMenu(index) {
         }
         else if (m == 4) {
             user.ivt(index);
+        }
+        else if (m == 5) {
+            user.showhistory(index);
         }
         else if (m == 6) {
             break;
